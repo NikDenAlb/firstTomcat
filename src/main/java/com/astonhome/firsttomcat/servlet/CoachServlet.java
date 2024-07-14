@@ -1,18 +1,20 @@
 package com.astonhome.firsttomcat.servlet;
 
-import com.astonhome.firsttomcat.dao.UserDAO;
-import com.astonhome.firsttomcat.entity.User;
+import com.astonhome.firsttomcat.dao.CoachDAO;
+import com.astonhome.firsttomcat.entity.Coach;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/users/*")
-public class UserServlet extends HttpServlet {
+@WebServlet("/coaches/*")
+public class CoachServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
@@ -21,18 +23,18 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<User> users = UserDAO.getAllUsers();
+            List<Coach> coaches = CoachDAO.getAllCoaches();
             PrintWriter out = response.getWriter();
-            String usersJsonString = gson.toJson(users);
-            out.print(usersJsonString);
+            String coachesJsonString = gson.toJson(coaches);
+            out.print(coachesJsonString);
             out.flush();
         } else {
             try {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
-                User user = UserDAO.getUser(id);
-                if (user != null) {
+                Coach coach = CoachDAO.getCoach(id);
+                if (coach != null) {
                     PrintWriter out = response.getWriter();
-                    String userJsonString = gson.toJson(user);
+                    String userJsonString = gson.toJson(coach);
                     out.print(userJsonString);
                     out.flush();
                 } else {
@@ -46,11 +48,11 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = gson.fromJson(request.getReader(), User.class);
-        User newUser = UserDAO.addUser(user);
+        Coach coach = gson.fromJson(request.getReader(), Coach.class);
+        Coach newCoach = CoachDAO.addCoach(coach);
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(gson.toJson(newUser));
+        out.print(gson.toJson(newCoach));
         out.flush();
     }
 
@@ -60,11 +62,11 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            User user = gson.fromJson(request.getReader(), User.class);
-            User updatedUser = UserDAO.updateUser(id, user);
+            Coach coach = gson.fromJson(request.getReader(), Coach.class);
+            Coach updatedCoach = CoachDAO.updateCoach(id, coach);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(gson.toJson(updatedUser));
+            out.print(gson.toJson(updatedCoach));
             out.flush();
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -77,11 +79,11 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            User user = UserDAO.deleteUser(id);
-            if (user != null) {
+            Coach coach = CoachDAO.deleteCoach(id);
+            if (coach != null) {
                 response.setContentType("application/json");
                 PrintWriter out = response.getWriter();
-                out.print(gson.toJson(user));
+                out.print(gson.toJson(coach));
                 out.flush();
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
