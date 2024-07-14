@@ -21,14 +21,12 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            // GET /users - Получить всех пользователей
             List<User> users = UserDAO.getAllUsers();
             PrintWriter out = response.getWriter();
             String usersJsonString = gson.toJson(users);
             out.print(usersJsonString);
             out.flush();
         } else {
-            // GET /users/{id} - Получить пользователя
             try {
                 int id = Integer.parseInt(pathInfo.split("/")[1]);
                 User user = UserDAO.getUser(id);
@@ -93,4 +91,3 @@ public class UserServlet extends HttpServlet {
         }
     }
 }
-

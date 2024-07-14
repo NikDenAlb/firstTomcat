@@ -1,15 +1,10 @@
 package com.astonhome.firsttomcat.dao;
-
-
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 public class UserDAO {
-
     public static List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -22,7 +17,6 @@ public class UserDAO {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
                 user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -44,7 +38,6 @@ public class UserDAO {
                     user = new User();
                     user.setId(resultSet.getLong("id"));
                     user.setName(resultSet.getString("name"));
-                    user.setEmail(resultSet.getString("email"));
                 }
             }
         } catch (SQLException e) {
@@ -54,13 +47,12 @@ public class UserDAO {
     }
 
     public static User addUser(User user) {
-        String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+        String sql = "INSERT INTO users (name) VALUES (?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, user.getName());
-            statement.setString(2, user.getEmail());
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows > 0) {
@@ -77,14 +69,13 @@ public class UserDAO {
     }
 
     public static User updateUser(int id, User user) {
-        String sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        String sql = "UPDATE users SET name = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, user.getName());
-            statement.setString(2, user.getEmail());
-            statement.setInt(3, id);
+            statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,5 +100,3 @@ public class UserDAO {
         return user;
     }
 }
-
-
