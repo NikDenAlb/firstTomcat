@@ -9,10 +9,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class User {
+public class Coach {
     private Long id;
     private String name;
-    private List<String> contact; //for one-to-many
-    private List<Coach> coaches; //for many-to-many
-    private String health; //for privacy
+    private List<String> scope; //for one-to-many
+    private List<User> users; //for many-to-many
 }
