@@ -11,12 +11,13 @@ public class DatabaseConnection {
     private static final String URL = "jdbc:postgresql://localhost:5432/ASTON670";
     private static final String USER = "AstonUser";
     private static final String PASSWORD = "WhilJhKyrsn6HrmVNqQ6";
+    private static final String DRIVER = "org.postgresql.Driver";
 
     static {
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("PostgreSQL JDBC Driver not found.", e);
+            throw new RuntimeException(DRIVER+" JDBC Driver not found.", e);
         }
     }
 
