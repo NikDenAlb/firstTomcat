@@ -1,9 +1,8 @@
 package com.astonhome.firsttomcat.servlet;
 
-import com.astonhome.firsttomcat.repository.UserDAO;
-import com.astonhome.firsttomcat.entity.User;
+import com.astonhome.firsttomcat.dto.UserDTO;
+import com.astonhome.firsttomcat.service.UserService;
 import com.google.gson.Gson;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -13,15 +12,21 @@ import java.util.List;
 
 @WebServlet("/users/*")
 public class UserServlet extends HttpServlet {
+    private UserService userService;
     private Gson gson = new Gson();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void init() {
+        this.userService = new UserService();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String pathInfo = request.getPathInfo();
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<User> users = UserDAO.getAllUsers();
+            List<UserDTO> users = userService.getAllUsers();
             PrintWriter out = response.getWriter();
             String usersJsonString = gson.toJson(users);
             out.print(usersJsonString);
@@ -29,7 +34,7 @@ public class UserServlet extends HttpServlet {
         } else {
             try {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
-                User user = UserDAO.getUser(id);
+                UserDTO user = userService.getUserById(id);
                 if (user != null) {
                     PrintWriter out = response.getWriter();
                     String userJsonString = gson.toJson(user);
@@ -45,26 +50,27 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = gson.fromJson(request.getReader(), User.class);
-        User newUser = UserDAO.addUser(user);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
+        userService.saveUser(userDTO);
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(gson.toJson(newUser));
+        out.print(gson.toJson(userDTO));
         out.flush();
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String pathInfo = request.getPathInfo();
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            User user = gson.fromJson(request.getReader(), User.class);
-            User updatedUser = UserDAO.updateUser(id, user);
+            UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
+            userDTO.setId(id);
+            userService.updateUser(userDTO);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(gson.toJson(updatedUser));
+            out.print(gson.toJson(userDTO));
             out.flush();
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -72,16 +78,16 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String pathInfo = request.getPathInfo();
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            User user = UserDAO.deleteUser(id);
-            if (user != null) {
+            UserDTO userDTO = userService.deleteUser(id);
+            if (userDTO != null) {
                 response.setContentType("application/json");
                 PrintWriter out = response.getWriter();
-                out.print(gson.toJson(user));
+                out.print(gson.toJson(userDTO));
                 out.flush();
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

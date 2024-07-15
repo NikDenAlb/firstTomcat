@@ -13,8 +13,8 @@ import java.util.List;
 public class User {
     private Long id;
     private String name;
-    private List<String> contact; //for one-to-many
     @ManyToMany
     private List<Coach> coaches; //for many-to-many
-    private String health; //for privacy
+//    private String health; //for privacy
+//    private List<String> contact; //for one-to-many
 }

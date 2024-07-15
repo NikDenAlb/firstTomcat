@@ -13,7 +13,7 @@ import java.util.List;
 public class Coach {
     private Long id;
     private String name;
-    private List<String> scope; //for one-to-many
     @ManyToMany
     private List<User> users; //for many-to-many
+//    private List<String> scope; //for one-to-many
 }
