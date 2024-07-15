@@ -3,6 +3,7 @@ package com.astonhome.firsttomcat.servlet;
 import com.astonhome.firsttomcat.dto.UserDTO;
 import com.astonhome.firsttomcat.service.UserService;
 import com.google.gson.Gson;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -21,7 +22,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         response.setContentType("application/json");
 
@@ -50,7 +51,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
         userService.saveUser(userDTO);
         response.setContentType("application/json");
@@ -60,7 +61,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
 
         try {
@@ -78,7 +79,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
 
         try {
