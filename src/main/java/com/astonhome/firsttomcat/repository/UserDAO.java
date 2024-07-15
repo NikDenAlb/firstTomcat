@@ -1,36 +1,33 @@
-package com.astonhome.firsttomcat.dao;
-
-import com.astonhome.firsttomcat.entity.Coach;
+package com.astonhome.firsttomcat.repository;
+import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-public class CoachDAO {
-    public static List<Coach> getAllCoaches() {
-        List<Coach> coaches = new ArrayList<>();
-        String sql = "SELECT * FROM coaches";
+public class UserDAO {
+    public static List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
 
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                Coach coach = new Coach();
-                coach.setId(resultSet.getLong("id"));
-                coach.setName(resultSet.getString("name"));
-                coaches.add(coach);
+                User user = new User();
+                user.setId(resultSet.getLong("id"));
+                user.setName(resultSet.getString("name"));
+                users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return coaches;
+        return users;
     }
 
-    public static Coach getCoach(long id) {
-        Coach coach = null;
-        String sql = "SELECT * FROM coaches WHERE id = ?";
+    public static User getUser(long id) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -38,58 +35,58 @@ public class CoachDAO {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    coach = new Coach();
-                    coach.setId(resultSet.getLong("id"));
-                    coach.setName(resultSet.getString("name"));
+                    user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setName(resultSet.getString("name"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return coach;
+        return user;
     }
 
-    public static Coach addCoach(Coach coach) {
-        String sql = "INSERT INTO coaches (name) VALUES (?)";
+    public static User addUser(User user) {
+        String sql = "INSERT INTO users (name) VALUES (?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            statement.setString(1, coach.getName());
+            statement.setString(1, user.getName());
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        coach.setId(generatedKeys.getLong(1));
+                        user.setId(generatedKeys.getLong(1));
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return coach;
+        return user;
     }
 
-    public static Coach updateCoach(long id, Coach coach) {
-        String sql = "UPDATE coaches SET name = ? WHERE id = ?";
+    public static User updateUser(long id, User user) {
+        String sql = "UPDATE users SET name = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, coach.getName());
+            statement.setString(1, user.getName());
             statement.setLong(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return coach;
+        return user;
     }
 
-    public static Coach deleteCoach(long id) {
-        Coach coach = getCoach(id);
-        if (coach != null) {
-            String sql = "DELETE FROM coaches WHERE id = ?";
+    public static User deleteUser(long id) {
+        User user = getUser(id);
+        if (user != null) {
+            String sql = "DELETE FROM users WHERE id = ?";
 
             try (Connection connection = DatabaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -100,6 +97,6 @@ public class CoachDAO {
                 e.printStackTrace();
             }
         }
-        return coach;
+        return user;
     }
 }

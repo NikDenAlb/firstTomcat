@@ -1,6 +1,6 @@
 package com.astonhome.firsttomcat.servlet;
 
-import com.astonhome.firsttomcat.dao.CoachDAO;
+import com.astonhome.firsttomcat.repository.CoachDAO;
 import com.astonhome.firsttomcat.entity.Coach;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
