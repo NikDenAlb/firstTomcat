@@ -20,9 +20,9 @@ public class UserService {
         return users.stream().map(UserMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 
-    public void saveUser(UserDTO userDTO) {
+    public UserDTO saveUser(UserDTO userDTO) {
         User user = UserMapper.INSTANCE.toEntity(userDTO);
-        UserDAO.addUser(user);
+        return UserMapper.INSTANCE.toDTO(UserDAO.addUser(user));
     }
 
     public void updateUser(UserDTO userDTO) {

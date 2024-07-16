@@ -1,8 +1,8 @@
 package com.astonhome.firsttomcat.servlet;
 
-import com.astonhome.firsttomcat.repository.CoachDAO;
-import com.astonhome.firsttomcat.entity.Coach;
-import com.google.gson.Gson;
+import com.astonhome.firsttomcat.dto.CoachDTO;
+import com.astonhome.firsttomcat.service.CoachService;
+ import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +15,13 @@ import java.util.List;
 
 @WebServlet("/coaches/*")
 public class CoachServlet extends HttpServlet {
+    private CoachService coachService;
     private Gson gson = new Gson();
+
+    @Override
+    public void init() {
+        this.coachService = new CoachService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,7 +29,7 @@ public class CoachServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<Coach> coaches = CoachDAO.getAllCoaches();
+            List<CoachDTO> coaches = coachService.getAllCoachs();
             PrintWriter out = response.getWriter();
             String coachesJsonString = gson.toJson(coaches);
             out.print(coachesJsonString);
@@ -31,11 +37,11 @@ public class CoachServlet extends HttpServlet {
         } else {
             try {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
-                Coach coach = CoachDAO.getCoach(id);
-                if (coach != null) {
+                CoachDTO coachDTO = coachService.getCoachById(id);
+                if (coachDTO != null) {
                     PrintWriter out = response.getWriter();
-                    String userJsonString = gson.toJson(coach);
-                    out.print(userJsonString);
+                    String coacJsonString = gson.toJson(coachDTO);
+                    out.print(coacJsonString);
                     out.flush();
                 } else {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -48,11 +54,11 @@ public class CoachServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Coach coach = gson.fromJson(request.getReader(), Coach.class);
-        Coach newCoach = CoachDAO.addCoach(coach);
+        CoachDTO coachDTO = gson.fromJson(request.getReader(), CoachDTO.class);
+        CoachDTO newCoachDTO = coachService.saveCoach(coachDTO);
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(gson.toJson(newCoach));
+        out.print(gson.toJson(newCoachDTO));
         out.flush();
     }
 
@@ -62,11 +68,12 @@ public class CoachServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            Coach coach = gson.fromJson(request.getReader(), Coach.class);
-            Coach updatedCoach = CoachDAO.updateCoach(id, coach);
+            CoachDTO coachDTO = gson.fromJson(request.getReader(), CoachDTO.class);
+            coachDTO.setId(id);
+            coachService.updateCoach(coachDTO);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(gson.toJson(updatedCoach));
+            out.print(gson.toJson(coachDTO));
             out.flush();
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -79,11 +86,11 @@ public class CoachServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            Coach coach = CoachDAO.deleteCoach(id);
-            if (coach != null) {
+            CoachDTO coachDTO = coachService.deleteCoach(id);
+            if (coachDTO != null) {
                 response.setContentType("application/json");
                 PrintWriter out = response.getWriter();
-                out.print(gson.toJson(coach));
+                out.print(gson.toJson(coachDTO));
                 out.flush();
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

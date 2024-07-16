@@ -53,10 +53,10 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
-        userService.saveUser(userDTO);
+        UserDTO newUserDTO = userService.saveUser(userDTO);
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(gson.toJson(userDTO));
+        out.print(gson.toJson(newUserDTO));
         out.flush();
     }
 
