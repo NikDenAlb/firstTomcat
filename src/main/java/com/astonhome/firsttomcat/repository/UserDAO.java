@@ -18,10 +18,7 @@ public class UserDAO {
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getLong("id"));
-                user.setName(resultSet.getString("name"));
-                users.add(user);
+                users.add(buildUser(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
