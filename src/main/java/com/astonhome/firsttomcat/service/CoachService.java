@@ -12,6 +12,9 @@ public class CoachService {
 
     public CoachDTO getCoachById(Long id) {
         Coach coach = CoachDAO.getCoach(id);
+        if (coach == null) {
+            return null;
+        }
         return CoachMapper.INSTANCE.toDTO(coach);
     }
 
