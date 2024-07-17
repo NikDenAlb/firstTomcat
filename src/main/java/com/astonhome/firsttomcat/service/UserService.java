@@ -12,6 +12,9 @@ public class UserService {
 
     public UserDTO getUserById(Long id) {
         User user = UserDAO.getUser(id);
+        if (user == null) {
+            return null;
+        }
         return UserMapper.INSTANCE.toDTO(user);
     }
 
@@ -34,7 +37,7 @@ public class UserService {
         return UserMapper.INSTANCE.toDTO(UserDAO.deleteUser(id));
     }
 
-    public List<UserDTO> getAllUserByCoachId (long id) {
+    public List<UserDTO> getAllUserByCoachId(long id) {
         return UserDAO.getAllUserByCoachId(id).stream().map(UserMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 }

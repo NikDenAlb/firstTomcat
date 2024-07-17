@@ -36,4 +36,8 @@ public class CoachService {
     public CoachDTO deleteCoach(Long id) {
         return CoachMapper.INSTANCE.toDTO(CoachDAO.deleteCoach(id));
     }
+
+    public List<CoachDTO> getAllCoachByUserId(long id) {
+        return CoachDAO.getAllCoachByUserId(id).stream().map(CoachMapper.INSTANCE::toDTO).collect(Collectors.toList());
+    }
 }

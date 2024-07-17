@@ -42,25 +42,6 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        sql = "SELECT * FROM coaches c WHERE c.coach_id in (SELECT coach_id FROM users_coaches WHERE user_id = ?)";
-        List<Coach> coaches = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Coach coach = new Coach();
-                    coach.setId(resultSet.getLong("id"));
-                    coach.setName(resultSet.getString("name"));
-                    coaches.add(coach);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        user.setCoaches(coaches);
         return user;
     }
 

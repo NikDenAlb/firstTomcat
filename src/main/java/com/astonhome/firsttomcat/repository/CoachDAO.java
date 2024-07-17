@@ -100,24 +100,23 @@ public class CoachDAO {
 
     public static List<Coach> getAllCoachByUserId(long id) {
         List<Coach> coaches = new ArrayList<>();
-        String sql = "SELECT * FROM coaches WHERE coaches.coach_id = users_coaches WHERE user_id = ?";
+        String sql = "SELECT c.coach_id, c.name FROM coaches c INNER JOIN users_coaches uc on c.coach_id = uc.coach_id WHERE uc.user_id = ?";
 
 
         try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-
-            while (resultSet.next()) {
-                Coach coach = new Coach();
-                coach.setId(resultSet.getLong("id"));
-                coach.setName(resultSet.getString("name"));
-                coaches.add(coach);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    coaches.add(buildCoach(resultSet));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return coaches;
     }
+
     private static Coach buildCoach(ResultSet resultSet) throws SQLException {
         Coach coach = new Coach();
         coach.setId(resultSet.getLong("coach_id"));
