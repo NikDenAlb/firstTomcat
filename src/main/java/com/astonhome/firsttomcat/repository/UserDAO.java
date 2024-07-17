@@ -1,9 +1,13 @@
 package com.astonhome.firsttomcat.repository;
+
+import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class UserDAO {
     public static List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -27,7 +31,7 @@ public class UserDAO {
 
     public static User getUser(long id) {
         User user = null;
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT * FROM users WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -69,7 +73,7 @@ public class UserDAO {
     }
 
     public static User updateUser(long id, User user) {
-        String sql = "UPDATE users SET name = ? WHERE id = ?";
+        String sql = "UPDATE users SET name = ? WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -86,7 +90,7 @@ public class UserDAO {
     public static User deleteUser(long id) {
         User user = getUser(id);
         if (user != null) {
-            String sql = "DELETE FROM users WHERE id = ?";
+            String sql = "DELETE FROM users WHERE user_id = ?";
 
             try (Connection connection = DatabaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,6 +101,27 @@ public class UserDAO {
                 e.printStackTrace();
             }
         }
+        return user;
+    }
+
+    private static User createUser(ResultSet resultSet) {
+        User user;
+        try {
+            user = new User();
+            user.setId(resultSet.getLong("user_id"));
+            user.setName(resultSet.getString("name"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+
+    private User constructUser(ResultSet resultSet, Long id) {
+        User user = createUser(resultSet);
+        List<Coach> coaches = CoachDAO.getAllCoachByUserId(id);
+        user.setCoaches(coaches);
+
         return user;
     }
 }

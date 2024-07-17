@@ -30,7 +30,7 @@ public class CoachDAO {
 
     public static Coach getCoach(long id) {
         Coach coach = null;
-        String sql = "SELECT * FROM coaches WHERE id = ?";
+        String sql = "SELECT * FROM coaches WHERE coach_id ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -72,7 +72,7 @@ public class CoachDAO {
     }
 
     public static Coach updateCoach(long id, Coach coach) {
-        String sql = "UPDATE coaches SET name = ? WHERE id = ?";
+        String sql = "UPDATE coaches SET name = ? WHERE coach_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -89,7 +89,7 @@ public class CoachDAO {
     public static Coach deleteCoach(long id) {
         Coach coach = getCoach(id);
         if (coach != null) {
-            String sql = "DELETE FROM coaches WHERE id = ?";
+            String sql = "DELETE FROM coaches WHERE coach_id = ?";
 
             try (Connection connection = DatabaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -101,5 +101,26 @@ public class CoachDAO {
             }
         }
         return coach;
+    }
+
+    public static List<Coach> getAllCoachByUserId(long id) {
+        List<Coach> coaches = new ArrayList<>();
+        String sql = "SELECT * FROM users_coaches WHERE user_id = ?";
+
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                Coach coach = new Coach();
+                coach.setId(resultSet.getLong("id"));
+                coach.setName(resultSet.getString("name"));
+                coaches.add(coach);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return coaches;
     }
 }
