@@ -39,14 +39,31 @@ public class UserDAO {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setName(resultSet.getString("name"));
+                    user = createUser(resultSet);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        sql = "SELECT * FROM coaches c WHERE c.coach_id in (SELECT coach_id FROM users_coaches WHERE user_id = ?)";
+        List<Coach> coaches = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Coach coach = new Coach();
+                    coach.setId(resultSet.getLong("id"));
+                    coach.setName(resultSet.getString("name"));
+                    coaches.add(coach);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        user.setCoaches(coaches);
         return user;
     }
 
@@ -117,11 +134,36 @@ public class UserDAO {
     }
 
 
-    private User constructUser(ResultSet resultSet, Long id) {
+    private static User constructUser(ResultSet resultSet, Long id) {
         User user = createUser(resultSet);
         List<Coach> coaches = CoachDAO.getAllCoachByUserId(id);
         user.setCoaches(coaches);
 
+        return user;
+    }
+
+    public static List<User> getAllUserByCoachId(long id) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT u.user_id, u.name FROM users u INNER JOIN users_coaches uc on u.user_id = uc.user_id WHERE uc.coach_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(buildUser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    private static User buildUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getLong("user_id"));
+        user.setName(resultSet.getString("name"));
         return user;
     }
 }

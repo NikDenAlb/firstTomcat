@@ -17,10 +17,7 @@ public class CoachDAO {
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                Coach coach = new Coach();
-                coach.setId(resultSet.getLong("id"));
-                coach.setName(resultSet.getString("name"));
-                coaches.add(coach);
+                coaches.add(buildCoach(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,7 +27,7 @@ public class CoachDAO {
 
     public static Coach getCoach(long id) {
         Coach coach = null;
-        String sql = "SELECT * FROM coaches WHERE coach_id ?";
+        String sql = "SELECT * FROM coaches WHERE coach_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -38,9 +35,7 @@ public class CoachDAO {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    coach = new Coach();
-                    coach.setId(resultSet.getLong("id"));
-                    coach.setName(resultSet.getString("name"));
+                    coach = buildCoach(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -105,7 +100,7 @@ public class CoachDAO {
 
     public static List<Coach> getAllCoachByUserId(long id) {
         List<Coach> coaches = new ArrayList<>();
-        String sql = "SELECT * FROM users_coaches WHERE user_id = ?";
+        String sql = "SELECT * FROM coaches WHERE coaches.coach_id = users_coaches WHERE user_id = ?";
 
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -122,5 +117,11 @@ public class CoachDAO {
             e.printStackTrace();
         }
         return coaches;
+    }
+    private static Coach buildCoach(ResultSet resultSet) throws SQLException {
+        Coach coach = new Coach();
+        coach.setId(resultSet.getLong("coach_id"));
+        coach.setName(resultSet.getString("name"));
+        return coach;
     }
 }

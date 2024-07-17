@@ -1,6 +1,5 @@
 package com.astonhome.firsttomcat.entity;
 
-import jakarta.persistence.ManyToMany;
 import lombok.*;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 public class User {
     private Long id;
     private String name;
-    @ManyToMany
+    //ManytoMany
     private List<Coach> coaches; //for many-to-many
-//    private String health; //for privacy
-//    private List<String> contact; //for one-to-many
+//    private String health; -только геттером//for privacy
+//    private List<Contact> contact; //for one-to-many - контакт обязательно класс(табличка)
 }

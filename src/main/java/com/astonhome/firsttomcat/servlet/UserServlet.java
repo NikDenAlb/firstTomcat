@@ -35,10 +35,10 @@ public class UserServlet extends HttpServlet {
         } else {
             try {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
-                UserDTO user = userService.getUserById(id);
-                if (user != null) {
+                UserDTO userDTO = userService.getUserById(id);
+                if (userDTO != null) {
                     PrintWriter out = response.getWriter();
-                    String userJsonString = gson.toJson(user);
+                    String userJsonString = gson.toJson(userDTO);
                     out.print(userJsonString);
                     out.flush();
                 } else {

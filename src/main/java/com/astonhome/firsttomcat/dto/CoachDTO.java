@@ -12,5 +12,5 @@ import java.util.List;
 public class CoachDTO {
     private Long id;
     private String name;
-    private List<UserDTO> coaches;
+    private List<UserDTO> users;
 }

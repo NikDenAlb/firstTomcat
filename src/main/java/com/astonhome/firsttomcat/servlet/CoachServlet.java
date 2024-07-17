@@ -2,7 +2,8 @@ package com.astonhome.firsttomcat.servlet;
 
 import com.astonhome.firsttomcat.dto.CoachDTO;
 import com.astonhome.firsttomcat.service.CoachService;
- import com.google.gson.Gson;
+import com.astonhome.firsttomcat.service.UserService;
+import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +17,13 @@ import java.util.List;
 @WebServlet("/coaches/*")
 public class CoachServlet extends HttpServlet {
     private CoachService coachService;
+    private UserService userService;
     private Gson gson = new Gson();
 
     @Override
     public void init() {
         this.coachService = new CoachService();
+        this.userService = new UserService();
     }
 
     @Override
@@ -39,6 +42,7 @@ public class CoachServlet extends HttpServlet {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
                 CoachDTO coachDTO = coachService.getCoachById(id);
                 if (coachDTO != null) {
+                    coachDTO.setUsers(userService.getAllUserByCoachId(id));
                     PrintWriter out = response.getWriter();
                     String coacJsonString = gson.toJson(coachDTO);
                     out.print(coacJsonString);
