@@ -29,7 +29,7 @@ public class CoachServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<CoachDTO> coaches = coachService.getAllCoachs();
+            List<CoachDTO> coaches = coachService.getAllCoaches();
             PrintWriter out = response.getWriter();
             String coachesJsonString = gson.toJson(coaches);
             out.print(coachesJsonString);

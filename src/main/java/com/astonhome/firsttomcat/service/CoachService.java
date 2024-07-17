@@ -15,8 +15,8 @@ public class CoachService {
         return CoachMapper.INSTANCE.toDTO(coach);
     }
 
-    public List<CoachDTO> getAllCoachs() {
-        List<Coach> coaches = CoachDAO.getAllCoachs();
+    public List<CoachDTO> getAllCoaches() {
+        List<Coach> coaches = CoachDAO.getAllCoaches();
         return coaches.stream().map(CoachMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 
