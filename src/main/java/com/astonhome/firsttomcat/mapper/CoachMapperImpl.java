@@ -3,8 +3,6 @@ package com.astonhome.firsttomcat.mapper;
 import com.astonhome.firsttomcat.dto.CoachDTO;
 import com.astonhome.firsttomcat.entity.Coach;
 
-import java.util.stream.Collectors;
-
 public class CoachMapperImpl implements CoachMapper {
     @Override
     public CoachDTO toDTO(Coach coach) {
@@ -19,7 +17,6 @@ public class CoachMapperImpl implements CoachMapper {
         Coach coach = new Coach();
         coach.setId(coachDTO.getId());
         coach.setName(coachDTO.getName());
-        coach.setUsers(coachDTO.getUsers().stream().map(UserMapper.INSTANCE::toEntity).collect(Collectors.toList()));
         return coach;
     }
 }
