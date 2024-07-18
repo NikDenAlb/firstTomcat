@@ -1,4 +1,4 @@
-package com.astonhome.firsttomcat.entity;
+package com.astonhome.firsttomcat.dto;
 
 import lombok.*;
 
@@ -9,11 +9,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class User {
+public class UserPrivateDTO {
     private Long id;
     private String name;
-    //@ManyToMany
-    private List<Coach> coaches;
+    private List<CoachDTO> coaches;
     private String health;
-//    private List<Contact> contact; //for one-to-many
 }

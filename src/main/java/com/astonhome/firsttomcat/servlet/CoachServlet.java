@@ -1,27 +1,30 @@
 package com.astonhome.firsttomcat.servlet;
 
-import com.astonhome.firsttomcat.dto.UserDTO;
+import com.astonhome.firsttomcat.dto.CoachDTO;
+import com.astonhome.firsttomcat.dto.CoachUpdateDTO;
 import com.astonhome.firsttomcat.service.CoachService;
 import com.astonhome.firsttomcat.service.UserService;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/users/*")
-public class UserServlet extends HttpServlet {
-    private UserService userService;
+@WebServlet("/coaches/*")
+public class CoachServlet extends HttpServlet {
     private CoachService coachService;
+    private UserService userService;
     private Gson gson = new Gson();
 
     @Override
     public void init() {
-        this.userService = new UserService();
         this.coachService = new CoachService();
+        this.userService = new UserService();
     }
 
     @Override
@@ -30,20 +33,20 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<UserDTO> users = userService.getAllUsers();
+            List<CoachDTO> coaches = coachService.getAllCoaches();
             PrintWriter out = response.getWriter();
-            String usersJsonString = gson.toJson(users);
-            out.print(usersJsonString);
+            String coachesJsonString = gson.toJson(coaches);
+            out.print(coachesJsonString);
             out.flush();
         } else {
             try {
                 long id = Long.parseLong(pathInfo.split("/")[1]);
-                UserDTO userDTO = userService.getUserById(id);
-                if (userDTO != null) {
-                    userDTO.setCoaches(coachService.getAllCoachByUserId(id));
+                CoachDTO coachDTO = coachService.getCoachById(id);
+                if (coachDTO != null) {
+                    coachDTO.setUsers(userService.getAllUserByCoachId(id));
                     PrintWriter out = response.getWriter();
-                    String userJsonString = gson.toJson(userDTO);
-                    out.print(userJsonString);
+                    String coacJsonString = gson.toJson(coachDTO);
+                    out.print(coacJsonString);
                     out.flush();
                 } else {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -56,11 +59,11 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
-        UserDTO newUserDTO = userService.saveUser(userDTO);
+        CoachDTO coachDTO = gson.fromJson(request.getReader(), CoachDTO.class);
+        CoachDTO newCoachDTO = coachService.saveCoach(coachDTO);
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(gson.toJson(newUserDTO));
+        out.print(gson.toJson(newCoachDTO));
         out.flush();
     }
 
@@ -70,16 +73,16 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            if (userService.getUserById(id) == null) {
+            if (coachService.getCoachById(id) == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
-            userDTO.setId(id);
-            userService.updateUser(userDTO);
+            CoachUpdateDTO coachUpdateDTO = gson.fromJson(request.getReader(), CoachUpdateDTO.class);
+            coachUpdateDTO.setId(id);
+            coachService.updateCoach(coachUpdateDTO);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(gson.toJson(userDTO));
+            out.print(gson.toJson(coachUpdateDTO));
             out.flush();
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -92,15 +95,15 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            if (userService.getUserById(id) == null) {
+            if (coachService.getCoachById(id) == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            UserDTO userDTO = userService.deleteUser(id);
-            if (userDTO != null) {
+            CoachDTO coachDTO = coachService.deleteCoach(id);
+            if (coachDTO != null) {
                 response.setContentType("application/json");
                 PrintWriter out = response.getWriter();
-                out.print(gson.toJson(userDTO));
+                out.print(gson.toJson(coachDTO));
                 out.flush();
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

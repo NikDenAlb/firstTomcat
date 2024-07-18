@@ -1,9 +1,13 @@
-package com.astonhome.firsttomcat.dao;
+package com.astonhome.firsttomcat.repository;
+
+import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class UserDAO {
     public static List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -14,10 +18,7 @@ public class UserDAO {
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getLong("id"));
-                user.setName(resultSet.getString("name"));
-                users.add(user);
+                users.add(buildUser(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,9 +26,9 @@ public class UserDAO {
         return users;
     }
 
-    public static User getUser(int id) {
+    public static User getUser(long id) {
         User user = null;
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT * FROM users WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -35,9 +36,7 @@ public class UserDAO {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setName(resultSet.getString("name"));
+                    user = createUser(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -68,14 +67,14 @@ public class UserDAO {
         return user;
     }
 
-    public static User updateUser(int id, User user) {
-        String sql = "UPDATE users SET name = ? WHERE id = ?";
+    public static User updateUser(long id, User user) {
+        String sql = "UPDATE users SET name = ? WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, user.getName());
-            statement.setInt(2, id);
+            statement.setLong(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,10 +82,10 @@ public class UserDAO {
         return user;
     }
 
-    public static User deleteUser(int id) {
+    public static User deleteUser(long id) {
         User user = getUser(id);
         if (user != null) {
-            String sql = "DELETE FROM users WHERE id = ?";
+            String sql = "DELETE FROM users WHERE user_id = ?";
 
             try (Connection connection = DatabaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,6 +96,53 @@ public class UserDAO {
                 e.printStackTrace();
             }
         }
+        return user;
+    }
+
+    private static User createUser(ResultSet resultSet) {
+        User user;
+        try {
+            user = new User();
+            user.setId(resultSet.getLong("user_id"));
+            user.setName(resultSet.getString("name"));
+            user.setHealth(resultSet.getString("health"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+
+    private static User constructUser(ResultSet resultSet, Long id) {
+        User user = createUser(resultSet);
+        List<Coach> coaches = CoachDAO.getAllCoachByUserId(id);
+        user.setCoaches(coaches);
+
+        return user;
+    }
+
+    public static List<User> getAllUserByCoachId(long id) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT u.user_id, u.name FROM users u INNER JOIN users_coaches uc on u.user_id = uc.user_id WHERE uc.coach_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(buildUser(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    private static User buildUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getLong("user_id"));
+        user.setName(resultSet.getString("name"));
         return user;
     }
 }
