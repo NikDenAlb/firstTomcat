@@ -41,4 +41,17 @@ public class TrainingDAO {
             e.printStackTrace();
         }
     }
+
+    public static void deleteTraining(TrainingDTO trainingDTO) {
+        String sql = "DELETE FROM users_coaches WHERE user_id = ? and coach_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, trainingDTO.getUser());
+            statement.setLong(2, trainingDTO.getCoach());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

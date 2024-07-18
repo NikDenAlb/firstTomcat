@@ -31,7 +31,7 @@ public class TrainingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         TrainingDTO trainingDTO = gson.fromJson(request.getReader(), TrainingDTO.class);
-        if (userService.getUserById(trainingDTO.getUser())==null||coachService.getCoachById(trainingDTO.getCoach())==null) {
+        if (userService.getUserById(trainingDTO.getUser()) == null || coachService.getCoachById(trainingDTO.getCoach()) == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -44,5 +44,22 @@ public class TrainingServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.print(gson.toJson(trainingDTO));
         out.flush();
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        TrainingDTO trainingDTO = gson.fromJson(request.getReader(), TrainingDTO.class);
+        if (!trainingService.checkTraining(trainingDTO)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        try {
+            trainingService.deleteTraining(trainingDTO);
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.print(gson.toJson(trainingDTO));
+            out.flush();
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 }

@@ -10,4 +10,7 @@ public class TrainingService {
     public void setTraining(TrainingDTO trainingDTO) {
        TrainingDAO.setTraining(trainingDTO);
     }
+    public void deleteTraining(TrainingDTO trainingDTO) {
+        TrainingDAO.deleteTraining(trainingDTO);
+    }
 }
