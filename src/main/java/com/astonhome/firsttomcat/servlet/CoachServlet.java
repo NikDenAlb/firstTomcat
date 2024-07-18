@@ -1,6 +1,7 @@
 package com.astonhome.firsttomcat.servlet;
 
 import com.astonhome.firsttomcat.dto.CoachDTO;
+import com.astonhome.firsttomcat.dto.CoachUpdateDTO;
 import com.astonhome.firsttomcat.service.CoachService;
 import com.astonhome.firsttomcat.service.UserService;
 import com.google.gson.Gson;
@@ -72,12 +73,16 @@ public class CoachServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            CoachDTO coachDTO = gson.fromJson(request.getReader(), CoachDTO.class);
-            coachDTO.setId(id);
-            coachService.updateCoach(coachDTO);
+            if (coachService.getCoachById(id) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            CoachUpdateDTO coachUpdateDTO = gson.fromJson(request.getReader(), CoachUpdateDTO.class);
+            coachUpdateDTO.setId(id);
+            coachService.updateCoach(coachUpdateDTO);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(gson.toJson(coachDTO));
+            out.print(gson.toJson(coachUpdateDTO));
             out.flush();
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

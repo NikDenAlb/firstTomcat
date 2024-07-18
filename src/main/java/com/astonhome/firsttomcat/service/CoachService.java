@@ -1,8 +1,10 @@
 package com.astonhome.firsttomcat.service;
 
 import com.astonhome.firsttomcat.dto.CoachDTO;
+import com.astonhome.firsttomcat.dto.CoachUpdateDTO;
 import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.mapper.CoachMapper;
+import com.astonhome.firsttomcat.mapper.CoachUpdateMapper;
 import com.astonhome.firsttomcat.repository.CoachDAO;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class CoachService {
         return CoachMapper.INSTANCE.toDTO(CoachDAO.addCoach(coach));
     }
 
-    public void updateCoach(CoachDTO coachDTO) {
-        Coach coach = CoachMapper.INSTANCE.toEntity(coachDTO);
+    public void updateCoach(CoachUpdateDTO coachUpdateDTO) {
+        Coach coach = CoachUpdateMapper.INSTANCE.toEntity(coachUpdateDTO);
         CoachDAO.updateCoach(coach.getId(), coach);
     }
 
