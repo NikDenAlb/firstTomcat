@@ -92,6 +92,10 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
+            if (userService.getUserById(id) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
             UserDTO userDTO = userService.deleteUser(id);
             if (userDTO != null) {
                 response.setContentType("application/json");

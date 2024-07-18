@@ -95,6 +95,10 @@ public class CoachServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
+            if (coachService.getCoachById(id) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
             CoachDTO coachDTO = coachService.deleteCoach(id);
             if (coachDTO != null) {
                 response.setContentType("application/json");
