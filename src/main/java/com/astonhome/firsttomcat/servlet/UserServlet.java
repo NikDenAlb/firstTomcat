@@ -70,6 +70,10 @@ public class UserServlet extends HttpServlet {
 
         try {
             long id = Long.parseLong(pathInfo.split("/")[1]);
+            if (userService.getUserById(id) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
             UserDTO userDTO = gson.fromJson(request.getReader(), UserDTO.class);
             userDTO.setId(id);
             userService.updateUser(userDTO);
