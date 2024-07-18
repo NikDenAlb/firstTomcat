@@ -31,14 +31,15 @@ class CoachMapperTest {
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
     void toDTO(CoachDTO outputCoachDTO, Coach inputCoach) {
-        assertEquals(coachMapper.toDTO(inputCoach).getId(), outputCoachDTO.getId());
-        assertEquals(coachMapper.toDTO(inputCoach).getName(), outputCoachDTO.getName());
+        assertEquals(outputCoachDTO.getId(), coachMapper.toDTO(inputCoach).getId());
+        assertEquals(outputCoachDTO.getName(), coachMapper.toDTO(inputCoach).getName());
     }
 
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
     void toEntity(CoachDTO inputCoachDTO, Coach outputCoach) {
-        assertEquals(coachMapper.toEntity(inputCoachDTO).getId(), outputCoach.getId());
-        assertEquals(coachMapper.toEntity(inputCoachDTO).getName(), outputCoach.getName());
+        assertEquals(outputCoach.getId(), coachMapper.toEntity(inputCoachDTO).getId());
+        assertEquals(outputCoach.getName(), coachMapper.toEntity(inputCoachDTO).getName());
+
     }
 }
