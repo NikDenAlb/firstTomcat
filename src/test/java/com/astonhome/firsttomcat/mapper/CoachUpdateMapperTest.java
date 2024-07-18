@@ -31,8 +31,8 @@ class CoachUpdateMapperTest {
 
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
-    void toEntity(CoachUpdateDTO coachUpdateDTO, Coach Coach) {
-        assertEquals(Coach.getId(), coachUpdateMapper.toEntity(coachUpdateDTO).getId());
-        assertEquals(Coach.getName(), coachUpdateMapper.toEntity(coachUpdateDTO).getName());
+    void toEntity(CoachUpdateDTO coachUpdateDTO, Coach coach) {
+        assertEquals(coach.getId(), coachUpdateMapper.toEntity(coachUpdateDTO).getId());
+        assertEquals(coach.getName(), coachUpdateMapper.toEntity(coachUpdateDTO).getName());
     }
 }

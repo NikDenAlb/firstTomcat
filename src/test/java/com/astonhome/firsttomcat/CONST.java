@@ -1,9 +1,6 @@
 package com.astonhome.firsttomcat;
 
-import com.astonhome.firsttomcat.dto.CoachDTO;
-import com.astonhome.firsttomcat.dto.CoachUpdateDTO;
-import com.astonhome.firsttomcat.dto.UserDTO;
-import com.astonhome.firsttomcat.dto.UserPrivateDTO;
+import com.astonhome.firsttomcat.dto.*;
 import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
 
@@ -50,6 +47,10 @@ public class CONST {
     public static CoachUpdateDTO COACHUPDATEDTO1 = new CoachUpdateDTO(1L, "coachName1");
     public static CoachUpdateDTO COACHUPDATEDTO2 = new CoachUpdateDTO(2L, "coachName2");
     public static CoachUpdateDTO COACHUPDATEDTO3 = new CoachUpdateDTO(3L, "coachName3");
+    ////////////
+    public static UserUpdateDTO USERUPDATEDTO1 = new UserUpdateDTO(1L, "userName1");
+    public static UserUpdateDTO USERUPDATEDTO2 = new UserUpdateDTO(2L, "userName2");
+    public static UserUpdateDTO USERUPDATEDTO3 = new UserUpdateDTO(3L, "userName3");
     ////////////
     public static UserPrivateDTO USERPRIVATEDTO1 = new UserPrivateDTO(1L, "userName1", null, null);
     public static UserPrivateDTO USERPRIVATEDTO2 = new UserPrivateDTO(2L, "userName2", COACHOFUSER2DTO, "Здоров");
