@@ -5,7 +5,8 @@ drop table if exists users_coaches;
 CREATE TABLE users
 (
     user_id SERIAL PRIMARY KEY,
-    name    VARCHAR(100) NOT NULL
+    name    VARCHAR(100) NOT NULL,
+    health  VARCHAR(100)
 );
 CREATE TABLE coaches
 (

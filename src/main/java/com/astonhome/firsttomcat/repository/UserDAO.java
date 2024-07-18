@@ -105,6 +105,7 @@ public class UserDAO {
             user = new User();
             user.setId(resultSet.getLong("user_id"));
             user.setName(resultSet.getString("name"));
+            user.setHealth(resultSet.getString("health"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

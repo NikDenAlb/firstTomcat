@@ -12,8 +12,8 @@ import java.util.List;
 public class User {
     private Long id;
     private String name;
-    //ManytoMany
-    private List<Coach> coaches; //for many-to-many
-//    private String health; -только геттером//for privacy
+    //@ManyToMany
+    private List<Coach> coaches;
+    private String health;
 //    private List<Contact> contact; //for one-to-many - контакт обязательно класс(табличка)
 }

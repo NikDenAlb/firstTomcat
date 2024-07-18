@@ -1,6 +1,7 @@
 package com.astonhome.firsttomcat.service;
 
 import com.astonhome.firsttomcat.dto.UserDTO;
+import com.astonhome.firsttomcat.dto.UserPrivateDTO;
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.mapper.UserMapper;
 import com.astonhome.firsttomcat.repository.UserDAO;
@@ -39,5 +40,13 @@ public class UserService {
 
     public List<UserDTO> getAllUserByCoachId(long id) {
         return UserDAO.getAllUserByCoachId(id).stream().map(UserMapper.INSTANCE::toDTO).collect(Collectors.toList());
+    }
+
+    public UserPrivateDTO getUserPrivateById(Long id) {
+        User user = UserDAO.getUser(id);
+        if (user == null) {
+            return null;
+        }
+        return UserMapper.INSTANCE.toPrivateDTO(user);
     }
 }
