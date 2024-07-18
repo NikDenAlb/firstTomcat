@@ -15,5 +15,5 @@ public class User {
     //@ManyToMany
     private List<Coach> coaches;
     private String health;
-//    private List<Contact> contact; //for one-to-many - контакт обязательно класс(табличка)
+//    private List<Contact> contact; //for one-to-many
 }
