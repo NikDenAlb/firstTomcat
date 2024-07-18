@@ -17,6 +17,6 @@ CREATE TABLE users_coaches
     user_id  BIGINT,
     coach_id BIGINT,
     PRIMARY KEY (user_id, coach_id),
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (coach_id) REFERENCES coaches (coach_id)
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (coach_id) REFERENCES coaches (coach_id) ON DELETE CASCADE
 );
