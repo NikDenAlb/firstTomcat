@@ -1,6 +1,7 @@
 package com.astonhome.firsttomcat;
 
 import com.astonhome.firsttomcat.dto.CoachDTO;
+import com.astonhome.firsttomcat.dto.CoachUpdateDTO;
 import com.astonhome.firsttomcat.dto.UserDTO;
 import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CONST {
-
     public static List<UserDTO> USERSOFCOACH1DTO = new ArrayList<>();
     public static CoachDTO COACH1DTO = new CoachDTO(1L, "coachName1", USERSOFCOACH1DTO);
 
@@ -27,10 +27,7 @@ public class CONST {
 
     public static List<UserDTO> USERSOFCOACH3DTO = new ArrayList<>(List.of(USER1DTO, USER2DTO, USER3DTO));
     public static CoachDTO COACH3DTO = new CoachDTO(3L, "coachName3", USERSOFCOACH3DTO);
-
-
-
-
+//
     public static List<User> USERSOFCOACH1 = new ArrayList<>();
     public static Coach COACH1 = new Coach(1L, "coachName1", USERSOFCOACH1);
 
@@ -48,6 +45,9 @@ public class CONST {
 
     public static List<User> USERSOFCOACH3 = new ArrayList<>(List.of(USER1, USER2, USER3));
     public static Coach COACH3 = new Coach(3L, "coachName3", USERSOFCOACH3);
-
+    ////////////
+    public static CoachUpdateDTO COACHUPDATEDTO1 = new CoachUpdateDTO(1L, "coachName1");
+    public static CoachUpdateDTO COACHUPDATEDTO2 = new CoachUpdateDTO(2L, "coachName2");
+    public static CoachUpdateDTO COACHUPDATEDTO3 = new CoachUpdateDTO(3L, "coachName3");
 
 }

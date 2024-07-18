@@ -13,9 +13,7 @@ import static com.astonhome.firsttomcat.CONST.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CoachMapperTest {
-
     private CoachMapper coachMapper;
-
 
     public static Stream<Arguments> provideParamsForTests() {
         return Stream.of(
