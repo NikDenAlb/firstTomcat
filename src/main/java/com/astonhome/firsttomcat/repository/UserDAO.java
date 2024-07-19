@@ -1,6 +1,5 @@
 package com.astonhome.firsttomcat.repository;
 
-import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-    public static List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
 
@@ -26,7 +25,7 @@ public class UserDAO {
         return users;
     }
 
-    public static User getUser(long id) {
+    public User getUser(long id) {
         User user = null;
         String sql = "SELECT * FROM users WHERE user_id = ?";
 
@@ -45,7 +44,7 @@ public class UserDAO {
         return user;
     }
 
-    public static User addUser(User user) {
+    public User addUser(User user) {
         String sql = "INSERT INTO users (name) VALUES (?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -67,7 +66,7 @@ public class UserDAO {
         return user;
     }
 
-    public static User updateUser(long id, User user) {
+    public User updateUser(long id, User user) {
         String sql = "UPDATE users SET name = ? WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -82,7 +81,7 @@ public class UserDAO {
         return user;
     }
 
-    public static User deleteUser(long id) {
+    public User deleteUser(long id) {
         User user = getUser(id);
         if (user != null) {
             String sql = "DELETE FROM users WHERE user_id = ?";
@@ -99,7 +98,7 @@ public class UserDAO {
         return user;
     }
 
-    private static User createUser(ResultSet resultSet) {
+    private User createUser(ResultSet resultSet) {
         User user;
         try {
             user = new User();
@@ -112,16 +111,7 @@ public class UserDAO {
         return user;
     }
 
-
-    private static User constructUser(ResultSet resultSet, Long id) {
-        User user = createUser(resultSet);
-        List<Coach> coaches = CoachDAO.getAllCoachByUserId(id);
-        user.setCoaches(coaches);
-
-        return user;
-    }
-
-    public static List<User> getAllUserByCoachId(long id) {
+    public List<User> getAllUserByCoachId(long id) {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.user_id, u.name FROM users u INNER JOIN users_coaches uc on u.user_id = uc.user_id WHERE uc.coach_id = ?";
 
@@ -139,7 +129,7 @@ public class UserDAO {
         return users;
     }
 
-    private static User buildUser(ResultSet resultSet) throws SQLException {
+    private User buildUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getLong("user_id"));
         user.setName(resultSet.getString("name"));
