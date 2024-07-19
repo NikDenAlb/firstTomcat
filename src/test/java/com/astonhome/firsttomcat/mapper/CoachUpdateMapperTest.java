@@ -18,9 +18,9 @@ class CoachUpdateMapperTest {
 
     public static Stream<Arguments> provideParamsForTests() {
         return Stream.of(
-                Arguments.of(COACHUPDATEDTO1, COACH1),
-                Arguments.of(COACHUPDATEDTO2, COACH2),
-                Arguments.of(COACHUPDATEDTO3, COACH3)
+                Arguments.of(COACH1),
+                Arguments.of(COACH2),
+                Arguments.of(COACH3)
         );
     }
 
@@ -31,7 +31,10 @@ class CoachUpdateMapperTest {
 
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
-    void toEntity(CoachUpdateDTO coachUpdateDTO, Coach coach) {
+    void toEntity(Coach coach) {
+        CoachUpdateDTO coachUpdateDTO = new CoachUpdateDTO();
+        coachUpdateDTO.setId(coach.getId());
+        coachUpdateDTO.setName(coach.getName());
         assertEquals(coach.getId(), coachUpdateMapper.toEntity(coachUpdateDTO).getId());
         assertEquals(coach.getName(), coachUpdateMapper.toEntity(coachUpdateDTO).getName());
     }

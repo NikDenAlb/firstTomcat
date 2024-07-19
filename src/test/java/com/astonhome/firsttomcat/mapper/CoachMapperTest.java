@@ -31,6 +31,7 @@ class CoachMapperTest {
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
     void toDTO(CoachDTO outputCoachDTO, Coach inputCoach) {
+        outputCoachDTO.setId(inputCoach.getId());
         assertEquals(outputCoachDTO.getId(), coachMapper.toDTO(inputCoach).getId());
         assertEquals(outputCoachDTO.getName(), coachMapper.toDTO(inputCoach).getName());
     }

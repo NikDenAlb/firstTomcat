@@ -31,6 +31,7 @@ class UserUpdateMapperTest {
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
     void toEntity(UserUpdateDTO userUpdateDTO, User user) {
+        userUpdateDTO.setId(user.getId());
         assertEquals(user.getId(), userUpdateMapper.toEntity(userUpdateDTO).getId());
         assertEquals(user.getName(), userUpdateMapper.toEntity(userUpdateDTO).getName());
     }

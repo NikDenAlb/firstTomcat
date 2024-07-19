@@ -40,6 +40,7 @@ class UserMapperTest {
     @ParameterizedTest
     @MethodSource("provideParamsForTests")
     void toDTO(UserDTO outputUserDTO, User inputUser) {
+        outputUserDTO.setId(inputUser.getId());
         assertEquals(outputUserDTO.getId(), userMapper.toDTO(inputUser).getId());
         assertEquals(outputUserDTO.getName(), userMapper.toDTO(inputUser).getName());
     }
@@ -55,6 +56,7 @@ class UserMapperTest {
     @ParameterizedTest
     @MethodSource("provideParamsForPrivateTests")
     void toPrivateDTO(User inputUser, UserPrivateDTO outputPrivateDTO) {
+        outputPrivateDTO.setId(inputUser.getId());
         assertEquals(outputPrivateDTO.getId(), userMapper.toPrivateDTO(inputUser).getId());
         assertEquals(outputPrivateDTO.getName(), userMapper.toPrivateDTO(inputUser).getName());
         assertEquals(outputPrivateDTO.getHealth(), userMapper.toPrivateDTO(inputUser).getHealth());
