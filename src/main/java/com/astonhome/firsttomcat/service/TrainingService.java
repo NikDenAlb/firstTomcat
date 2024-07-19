@@ -4,13 +4,17 @@ import com.astonhome.firsttomcat.dto.TrainingDTO;
 import com.astonhome.firsttomcat.repository.TrainingDAO;
 
 public class TrainingService {
+    private final TrainingDAO trainingDAO = new TrainingDAO();
+
     public boolean checkTraining(TrainingDTO trainingDTO) {
-        return TrainingDAO.checkTraining(trainingDTO);
+        return trainingDAO.checkTraining(trainingDTO);
     }
+
     public void setTraining(TrainingDTO trainingDTO) {
-       TrainingDAO.setTraining(trainingDTO);
+        trainingDAO.setTraining(trainingDTO);
     }
+
     public void deleteTraining(TrainingDTO trainingDTO) {
-        TrainingDAO.deleteTraining(trainingDTO);
+        trainingDAO.deleteTraining(trainingDTO);
     }
 }

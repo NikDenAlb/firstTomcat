@@ -6,7 +6,7 @@ import com.astonhome.firsttomcat.utils.DatabaseConnection;
 import java.sql.*;
 
 public class TrainingDAO {
-    public static boolean checkTraining(TrainingDTO trainingDTO) {
+    public boolean checkTraining(TrainingDTO trainingDTO) {
 
         String sql = "SELECT 1 FROM users_coaches WHERE user_id = ? and coach_id= ? LIMIT 1";
 
@@ -26,7 +26,7 @@ public class TrainingDAO {
         return false;
     }
 
-    public static void setTraining(TrainingDTO trainingDTO) {
+    public void setTraining(TrainingDTO trainingDTO) {
 
         String sql = "INSERT INTO users_coaches (user_id, coach_id) VALUES (?, ?)";
 
@@ -42,7 +42,7 @@ public class TrainingDAO {
         }
     }
 
-    public static void deleteTraining(TrainingDTO trainingDTO) {
+    public void deleteTraining(TrainingDTO trainingDTO) {
         String sql = "DELETE FROM users_coaches WHERE user_id = ? and coach_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
