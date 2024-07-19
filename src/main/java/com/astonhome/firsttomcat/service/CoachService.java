@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoachService {
+    private final CoachDAO coachDAO = new CoachDAO();
 
     public CoachDTO getCoachById(Long id) {
-        Coach coach = CoachDAO.getCoach(id);
+        Coach coach = coachDAO.getCoach(id);
         if (coach == null) {
             return null;
         }
@@ -21,25 +22,25 @@ public class CoachService {
     }
 
     public List<CoachDTO> getAllCoaches() {
-        List<Coach> coaches = CoachDAO.getAllCoaches();
+        List<Coach> coaches = coachDAO.getAllCoaches();
         return coaches.stream().map(CoachMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 
     public CoachDTO saveCoach(CoachDTO coachDTO) {
         Coach coach = CoachMapper.INSTANCE.toEntity(coachDTO);
-        return CoachMapper.INSTANCE.toDTO(CoachDAO.addCoach(coach));
+        return CoachMapper.INSTANCE.toDTO(coachDAO.addCoach(coach));
     }
 
     public void updateCoach(CoachUpdateDTO coachUpdateDTO) {
         Coach coach = CoachUpdateMapper.INSTANCE.toEntity(coachUpdateDTO);
-        CoachDAO.updateCoach(coach.getId(), coach);
+        coachDAO.updateCoach(coach.getId(), coach);
     }
 
     public CoachDTO deleteCoach(Long id) {
-        return CoachMapper.INSTANCE.toDTO(CoachDAO.deleteCoach(id));
+        return CoachMapper.INSTANCE.toDTO(coachDAO.deleteCoach(id));
     }
 
     public List<CoachDTO> getAllCoachByUserId(long id) {
-        return CoachDAO.getAllCoachByUserId(id).stream().map(CoachMapper.INSTANCE::toDTO).collect(Collectors.toList());
+        return coachDAO.getAllCoachByUserId(id).stream().map(CoachMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,5 @@
 package com.astonhome.firsttomcat.repository;
 
-import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.entity.User;
 import com.astonhome.firsttomcat.utils.DatabaseConnection;
 
@@ -109,15 +108,6 @@ public class UserDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return user;
-    }
-
-
-    private static User constructUser(ResultSet resultSet, Long id) {
-        User user = createUser(resultSet);
-        List<Coach> coaches = CoachDAO.getAllCoachByUserId(id);
-        user.setCoaches(coaches);
-
         return user;
     }
 

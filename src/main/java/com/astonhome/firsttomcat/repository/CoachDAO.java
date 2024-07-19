@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CoachDAO {
-    public static List<Coach> getAllCoaches() {
+    public List<Coach> getAllCoaches() {
         List<Coach> coaches = new ArrayList<>();
         String sql = "SELECT * FROM coaches";
 
@@ -25,7 +25,7 @@ public class CoachDAO {
         return coaches;
     }
 
-    public static Coach getCoach(long id) {
+    public Coach getCoach(long id) {
         Coach coach = null;
         String sql = "SELECT * FROM coaches WHERE coach_id = ?";
 
@@ -44,7 +44,7 @@ public class CoachDAO {
         return coach;
     }
 
-    public static Coach addCoach(Coach coach) {
+    public Coach addCoach(Coach coach) {
         String sql = "INSERT INTO coaches (name) VALUES (?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -66,7 +66,7 @@ public class CoachDAO {
         return coach;
     }
 
-    public static Coach updateCoach(long id, Coach coach) {
+    public Coach updateCoach(long id, Coach coach) {
         String sql = "UPDATE coaches SET name = ? WHERE coach_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -81,7 +81,7 @@ public class CoachDAO {
         return coach;
     }
 
-    public static Coach deleteCoach(long id) {
+    public Coach deleteCoach(long id) {
         Coach coach = getCoach(id);
         if (coach != null) {
             String sql = "DELETE FROM coaches WHERE coach_id = ?";
@@ -98,7 +98,7 @@ public class CoachDAO {
         return coach;
     }
 
-    public static List<Coach> getAllCoachByUserId(long id) {
+    public List<Coach> getAllCoachByUserId(long id) {
         List<Coach> coaches = new ArrayList<>();
         String sql = "SELECT c.coach_id, c.name FROM coaches c INNER JOIN users_coaches uc on c.coach_id = uc.coach_id WHERE uc.user_id = ?";
 
@@ -117,7 +117,7 @@ public class CoachDAO {
         return coaches;
     }
 
-    private static Coach buildCoach(ResultSet resultSet) throws SQLException {
+    private Coach buildCoach(ResultSet resultSet) throws SQLException {
         Coach coach = new Coach();
         coach.setId(resultSet.getLong("coach_id"));
         coach.setName(resultSet.getString("name"));
