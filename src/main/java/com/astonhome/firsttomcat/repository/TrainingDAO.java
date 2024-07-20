@@ -26,7 +26,7 @@ public class  TrainingDAO {
         return false;
     }
 
-    public void setTraining(TrainingDTO trainingDTO) {
+    public boolean setTraining(TrainingDTO trainingDTO) {
 
         String sql = "INSERT INTO users_coaches (user_id, coach_id) VALUES (?, ?)";
 
@@ -36,13 +36,15 @@ public class  TrainingDAO {
             statement.setLong(1, trainingDTO.getUser());
             statement.setLong(2, trainingDTO.getCoach());
             statement.executeUpdate();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void deleteTraining(TrainingDTO trainingDTO) {
+    public boolean deleteTraining(TrainingDTO trainingDTO) {
         String sql = "DELETE FROM users_coaches WHERE user_id = ? and coach_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -50,8 +52,10 @@ public class  TrainingDAO {
             statement.setLong(1, trainingDTO.getUser());
             statement.setLong(2, trainingDTO.getCoach());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package com.astonhome.firsttomcat.servlet;
 
 import com.astonhome.firsttomcat.dto.TrainingDTO;
+import com.astonhome.firsttomcat.repository.TrainingDAO;
 import com.astonhome.firsttomcat.service.CoachService;
 import com.astonhome.firsttomcat.service.TrainingService;
 import com.astonhome.firsttomcat.service.UserService;
@@ -25,7 +26,7 @@ public class TrainingServlet extends HttpServlet {
     public void init() {
         this.userService = new UserService();
         this.coachService = new CoachService();
-        this.trainingService = new TrainingService();
+        this.trainingService = new TrainingService(new TrainingDAO());
     }
 
     @Override
