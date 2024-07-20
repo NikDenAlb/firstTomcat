@@ -5,7 +5,6 @@ import com.astonhome.firsttomcat.entity.Coach;
 import com.astonhome.firsttomcat.repository.CoachDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,18 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class CoachServiceTest {
-
+    private CoachService coachService;
     @Mock
     private CoachDAO mockCoachDAO;
-
-
-    @InjectMocks
-    private CoachService coachService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        coachService = new CoachService();
+        coachService = new CoachService(mockCoachDAO);
     }
 
     @Test
