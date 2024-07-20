@@ -35,7 +35,6 @@ class CoachDAOTest {
     @Test
     @Order(5)
     void getCoach() {
-        assertNull(coachDAO.getCoach(2));
         Long id = coachDAO.addCoach(COACH1).getId();
         assertEquals(COACHNAME1, coachDAO.getCoach(id).getName());
     }
@@ -73,8 +72,10 @@ class CoachDAOTest {
     @Test
     @Order(4)
     void deleteCoach() {
-        coachDAO.deleteCoach(2);
-        assertNull(coachDAO.getCoach(2));
+        Coach coach = coachDAO.addCoach(COACH1);
+        Long id = coach.getId();
+        coachDAO.deleteCoach(id);
+        assertNull(coachDAO.getCoach(id));
     }
 
     @Test
