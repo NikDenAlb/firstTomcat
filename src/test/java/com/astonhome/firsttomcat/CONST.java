@@ -54,6 +54,8 @@ public class CONST {
     public static UserUpdateDTO USERUPDATEDTO1 = new UserUpdateDTO(1L, USERNAME1);
     public static UserUpdateDTO USERUPDATEDTO2 = new UserUpdateDTO(2L, USERNAME2);
     public static UserUpdateDTO USERUPDATEDTO3 = new UserUpdateDTO(3L, USERNAME3);
+    //
+    public static CoachUpdateDTO UCOACHUPDATEDTO1 = new CoachUpdateDTO(1L, COACHNAME1);
     ////////////
     public static UserPrivateDTO USERPRIVATEDTO1 = new UserPrivateDTO(1L, "userName1", null, null);
     public static UserPrivateDTO USERPRIVATEDTO2 = new UserPrivateDTO(2L, "userName2", COACHOFUSER2DTO, "Здоров");
