@@ -5,7 +5,7 @@ import com.astonhome.firsttomcat.utils.DatabaseConnection;
 
 import java.sql.*;
 
-public class TrainingDAO {
+public class  TrainingDAO {
     public boolean checkTraining(TrainingDTO trainingDTO) {
 
         String sql = "SELECT 1 FROM users_coaches WHERE user_id = ? and coach_id= ? LIMIT 1";

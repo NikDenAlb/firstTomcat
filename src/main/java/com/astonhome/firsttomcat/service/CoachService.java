@@ -31,9 +31,9 @@ public class CoachService {
         return CoachMapper.INSTANCE.toDTO(coachDAO.addCoach(coach));
     }
 
-    public void updateCoach(CoachUpdateDTO coachUpdateDTO) {
+    public Coach updateCoach(CoachUpdateDTO coachUpdateDTO) {
         Coach coach = CoachUpdateMapper.INSTANCE.toEntity(coachUpdateDTO);
-        coachDAO.updateCoach(coach.getId(), coach);
+        return coachDAO.updateCoach(coach.getId(), coach);
     }
 
     public CoachDTO deleteCoach(Long id) {
