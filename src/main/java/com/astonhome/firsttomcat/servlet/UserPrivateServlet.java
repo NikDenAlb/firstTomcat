@@ -1,6 +1,8 @@
 package com.astonhome.firsttomcat.servlet;
 
 import com.astonhome.firsttomcat.dto.UserPrivateDTO;
+import com.astonhome.firsttomcat.repository.CoachDAO;
+import com.astonhome.firsttomcat.repository.UserDAO;
 import com.astonhome.firsttomcat.service.CoachService;
 import com.astonhome.firsttomcat.service.UserService;
 import com.google.gson.Gson;
@@ -21,8 +23,8 @@ public class UserPrivateServlet extends HttpServlet {
 
     @Override
     public void init() {
-        this.userService = new UserService();
-        this.coachService = new CoachService();
+        this.userService = new UserService(new UserDAO());
+        this.coachService = new CoachService(new CoachDAO());
     }
 
     @Override

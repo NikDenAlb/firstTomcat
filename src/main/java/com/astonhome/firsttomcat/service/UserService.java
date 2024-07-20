@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserService {
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO;
+
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public UserDTO getUserById(Long id) {
         User user = userDAO.getUser(id);

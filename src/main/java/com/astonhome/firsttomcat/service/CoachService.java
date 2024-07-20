@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoachService {
-    private final CoachDAO coachDAO = new CoachDAO();
+    private final CoachDAO coachDAO;
+
+    public CoachService(CoachDAO coachDAO) {
+        this.coachDAO = coachDAO;
+    }
 
     public CoachDTO getCoachById(Long id) {
         Coach coach = coachDAO.getCoach(id);
